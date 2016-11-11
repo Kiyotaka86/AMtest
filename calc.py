@@ -6,15 +6,22 @@ cgitb.enable()
 
 form = cgi.FieldStorage()
 
-shiki = form["foo".value
-#shiki = eval(form.getvalue('foo'))
+hen = form.getvalue('foo')
 
-#result = eval(shiki)
-
-print "Content-type: text/html\n"
-print shiki
+if ' ' in hen or '-' in hen or '*' in hen or '/' in hen:
+    if ' ' in hen:
+        newhen = hen.replace(' ', '+')
+        print "Content-type: text/html\n"
+        print eval(newhen)
+    else:
+        print "Content-type: text/html\n"
+        print eval(hen)
+else:
+    print "Content-type: text/html\n"
+    print "ERROR"
 
 html_body="""
 <html><body>
 %s
 </body></html>"""
+~                        
