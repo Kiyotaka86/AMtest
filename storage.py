@@ -13,10 +13,8 @@ names = form.getvalue('name')
 s_stocks = form.getvalue('amount')
 s_kakaku = form.getvalue('price')
 
-stocks = None
-kakaku = None
 
-ef adding (names,  s_stocks):
+def adding (names,  s_stocks):
     stocks =None
     if s_stocks != None:
         if (isinstance(eval(s_stocks),(int, long))):
@@ -33,20 +31,62 @@ ef adding (names,  s_stocks):
         cur.execute(sql)
         print "Content-type: text/html\n"
         print ""
-    
- 
 
 def check (names):
     if names == None:
-        sql = "select namae, stock from product order by namae;"
+        sql = "select namae, stock from product having stock>0 order by namae;"
         cur.execute(sql)
         result = list(cur.fetchall())
         print "Content-type: text/html\n"
         for f in result:
-            print f[0]
-            print ":"
-            print f[1]
-            print "<BR>"
+            print str(f[0]) + ": " + str(f[1])
+
+    else:
+        sql = "select namae, stock from product where " + names + ";"
+        cur.execute(sql)
+        result = list(cur.fetchall())
+        print "Content-type: text/html\n"
+        for f in result:
+            print str([0]) + ": " +str(f[1])
+
+def selling (names, s_stocks, s_kakaku):
+    if s_stocks == None:
+        if s_kakaku == None:
+            sql = "update product set stock=stock-1 where namae='" + names + "';"
+            cur.execute(sql)
+            print "Content-type: text/html\n"
+            print ""
+        else:
+            sql = "update product set stock=stock-1 where namae='" + names + "';"
+            cur.execute(sql)
+            sql = "update sales set sales=sales + " + s_kakaku + " where namae='sales';"
+            cur.execute(sql)
+            print "Content-type: text/html\n"
+    else:
+        if s_kakaku == None:
+            sql = "update product set stock=stock-" + s_stocks + " where namae='" + names + "';"
+            cur.execute(sql)
+            print "Content-type: text/html\n"
+            print ""
+        else:
+            sql = "update product set stock=stock-" + s_stocks + " where namae=' " + names + "';"
+            cur.execute(sql)
+            sql = "update sales set sales=sales + " + str(eval(s_kakaku)*eval(s_stocks))  + " where namae='sales';"
+            cur.execute(sql)
+            print "Content-type: text/html\n"
+            print ""
+            print ""
+            
+def checksell():
+    sql = "select namae, sales from sales;"
+    cur.execute(sql)
+    result = list(cur.fetchall())
+    print "Content-type: text/html\n"
+    for f in result:
+        if (isinstance(f[1],(int, long))):
+            print str(f[0]) + ": " + str(f[1])
+        elif (isinstance(f[1],(float))):
+            print str(f[0]) + ": " + str(round(f[1],2))
 
 if comm != None:
     if comm == 'deleteall':
@@ -64,15 +104,14 @@ if comm != None:
         print ""
     elif comm == 'addstock':
         adding(names, s_stocks)
-        print "Content-type: text/html\n"
-        print ""
-    elif comm == 'checkstock':
+        elif comm == 'checkstock':
         check(names)
-    
-        
-        
-connector.commit()
+    elif comm == 'sell':
+        selling(names, s_stocks, s_kakaku)
+    elif comm == 'checksales':
+        checksell()
 
+connector.commit()
 
 cur.close()
 connector.close()
@@ -82,5 +121,3 @@ html_body="""
 <html><body>
 %s
 </body></html>"""
-
-        
