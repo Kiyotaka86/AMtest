@@ -16,24 +16,37 @@ s_kakaku = form.getvalue('price')
 stocks = None
 kakaku = None
 
-def adding (names, s_stocks):
-    if stocks != None:
-        sql = "insert into product values('" + names + "', " + s_stocks + ")"
-        cur.execute(sql)
-
+ef adding (names,  s_stocks):
+    stocks =None
+    if s_stocks != None:
+        if (isinstance(eval(s_stocks),(int, long))):
+            stocks = eval(s_stocks)
+            sql = "insert into product values('" + names + "', " + s_stocks + ")"
+            cur.execute(sql)
+            print "Content-type: text/html\n"
+            print ""
+        else:
+            print "Content-type: text/html\n"
+            print "ERROR"
     else:
         sql = "insert into product values('" + names + "', 1)"
-        cur.execute(sql)        
+        cur.execute(sql)
+        print "Content-type: text/html\n"
+        print ""
+    
+ 
 
 def check (names):
-    if names ==None:
+    if names == None:
         sql = "select namae, stock from product order by namae;"
         cur.execute(sql)
-        result = cur.fetchall()
+        result = list(cur.fetchall())
         print "Content-type: text/html\n"
-        print resut
-        
-        
+        for f in result:
+            print f[0]
+            print ":"
+            print f[1]
+            print "<BR>"
 
 if comm != None:
     if comm == 'deleteall':
@@ -56,20 +69,6 @@ if comm != None:
     elif comm == 'checkstock':
         check(names)
     
-if s_stocks != None:
-    if (isinstance(eval(s_stocks),(int, long))):
-        stocks = eval(s_stocks)
-    else:
-        print "Content-type: text/html\n"
-        print "ERROR"
-if s_kakaku != None:
-    if (isinstance(eval(s_kakaku),(int, long))):
-       kakaku = eval(s_kakaku)
-    else:
-        print "Content-type: text/html\n"
-        print "ERROR"
-
-
         
         
 connector.commit()
