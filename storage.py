@@ -24,15 +24,28 @@ def adding (names, s_stocks):
     else:
         sql = "insert into product values('product', '" + names + "', 1)"
         cur.execute(sql)        
-    
+
+def check (names):
+    if names ==None:
+        sql = "select namae, stock\nfrom product\ngroup product\norder by namae;"
+        cur.execute(sql)
+        result = cur.fetchall()
+        print "Content-type: text/html\n"
+        print resut
+        
+        
 
 if comm != None:
     if comm == 'deleteall':
         sql = "drop table product"
         cur.execute(sql)
-        sql = "create table product(shurui char(10), namae char(50), stock integer)"
+        sql = "drop table sales"
         cur.execute(sql)
-        sql = "insert into product values('sales', 'sales', 0)"
+        sql = "create table product(namae char(50), stock integer)"
+        cur.execute(sql)
+        sql = "create table sales(namae char(30), sales integer)"
+        cur.execute(sql)
+        sql = "insert into sales values('sales', 0)"
         cur.execute(sql)
         print "Content-type: text/html\n"
         print ""
@@ -40,7 +53,8 @@ if comm != None:
         adding(names, s_stocks)
         print "Content-type: text/html\n"
         print ""
-        
+    elif comm == 'checkstock':
+        check(names)
     
 if s_stocks != None:
     if (isinstance(eval(s_stocks),(int, long))):
