@@ -16,13 +16,32 @@ s_kakaku = form.getvalue('price')
 stocks = None
 kakaku = None
 
+def adding (names, s_stocks):
+    if stocks != None:
+        sql = "insert into product values('product', '" + names + "', " + s_stocks + ")"
+        cur.execute(sql)
+
+    else:
+        sql = "insert into product values('product', '" + names + "', 1)"
+        cur.execute(sql)        
+    
+
 if comm != None:
-    if comm == 'deleteall'
+    if comm == 'deleteall':
         sql = "drop table product"
         cur.execute(sql)
         sql = "create table product(shurui char(10), namae char(50), stock integer)"
         cur.execute(sql)
-
+        sql = "insert into product values('sales', 'sales', 0)"
+        cur.execute(sql)
+        print "Content-type: text/html\n"
+        print ""
+    elif comm == 'addstock':
+        adding(names, s_stocks)
+        print "Content-type: text/html\n"
+        print ""
+        
+    
 if s_stocks != None:
     if (isinstance(eval(s_stocks),(int, long))):
         stocks = eval(s_stocks)
@@ -36,6 +55,9 @@ if s_kakaku != None:
         print "Content-type: text/html\n"
         print "ERROR"
 
+
+        
+        
 connector.commit()
 
 
