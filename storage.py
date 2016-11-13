@@ -18,16 +18,16 @@ kakaku = None
 
 def adding (names, s_stocks):
     if stocks != None:
-        sql = "insert into product values('product', '" + names + "', " + s_stocks + ")"
+        sql = "insert into product values('" + names + "', " + s_stocks + ")"
         cur.execute(sql)
 
     else:
-        sql = "insert into product values('product', '" + names + "', 1)"
+        sql = "insert into product values('" + names + "', 1)"
         cur.execute(sql)        
 
 def check (names):
     if names ==None:
-        sql = "select namae, stock\nfrom product\ngroup product\norder by namae;"
+        sql = "select namae, stock from product order by namae;"
         cur.execute(sql)
         result = cur.fetchall()
         print "Content-type: text/html\n"
